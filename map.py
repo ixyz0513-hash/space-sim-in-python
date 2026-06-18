@@ -14,8 +14,8 @@ galaxy_map = [
 
 def map_print(ship: SpaceShip) -> None:
 
-    for i in range(0, len(galaxy_map) - 1):
-        for j in range(0, len(galaxy_map) - 1):
+    for i in range(0, len(galaxy_map)):
+        for j in range(0, len(galaxy_map[i])):
             
             if ship.get_y_position() == i and ship.get_x_position() == j:
                 print("P",end=" ")

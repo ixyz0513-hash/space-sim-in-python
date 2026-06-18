@@ -1,8 +1,20 @@
 random events plundering, attacking
 market system stocks fall down go up?
+buying stocks probably to haul cargo to a better planet that buys it for more
 planet system each planet has a better market or worse one and something special like some events?
-fuel system maybe (fuel / efficiency) * distance?
+fuel system maybe (fuel_lost_per_distance / efficiency) * distance? # made it
 upgrades like better efficiency or health?
-Player class with health and money # this first
-SpaceShip class with load weight and fuel  and with x y position
-maybe galaxy events?
+Player class with health and money # made it now i need to add some features to it
+SpaceShip class with load weight and fuel  and with x y position # made it now i need to add some features to it
+maybe galaxy events
+hazard areas
+losing hp on some planets
+turn counting
+
+
+
+# if i ever update the game again
+turn based ship attacking
+fog of war logic
+an ending
+mutations to items
