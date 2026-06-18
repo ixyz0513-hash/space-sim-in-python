@@ -1,0 +1,8 @@
+random events plundering, attacking
+market system stocks fall down go up?
+planet system each planet has a better market or worse one and something special like some events?
+fuel system maybe (fuel / efficiency) * distance?
+upgrades like better efficiency or health?
+Player class with health and money # this first
+SpaceShip class with load weight and fuel  and with x y position
+maybe galaxy events?
