@@ -15,6 +15,7 @@ class Planet:
     item_weights: list[int] = EARTH_ITEM_WEIGHTS,
     item_prices_default: list[float] = EARTH_ITEM_PRICES_DEFAULT
     ) -> None:
+    
         self.__name: str = name
         self.__x_position: int = x_position
         self.__y_position: int = y_position

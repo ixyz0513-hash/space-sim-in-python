@@ -1,5 +1,5 @@
 import math
-from constants import FUEL_LOST_PER_DISTANCE1
+from constants import FUEL_LOST_PER_DISTANCE1,FUEL_GAIN_PER_FUEL_CELL
 
 class SpaceShip:
 
@@ -136,6 +136,26 @@ class SpaceShip:
         self.__y_position = y_position
 
         return True
+
+    
+
+    def use_fuel_cell(self) -> bool:
+
+        counter: int = 0
+       
+        for obj in self.__cargo:
+
+            if "Fuel cell" == obj:
+                self.__fuel += FUEL_GAIN_PER_FUEL_CELL
+                self.sub_item_cargo("Fuel cell")
+                self.substract_weight_cargo(counter)
+                print("fuel replenished")
+                return True
+
+            counter += 1
+        
+        print("no fuel cells")
+        return False
 
 
     

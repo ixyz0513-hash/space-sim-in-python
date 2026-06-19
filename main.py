@@ -12,10 +12,10 @@ def main() -> None:
     planet1.buy_something_from_market(ship,player1)
     print(ship.count_weight_cargo())
     print(player1.get_money())
-
-    planet1.sell_something_from_ship(ship,player1)
+    
+    ship.use_fuel_cell()
+    print(ship.get_fuel())
     print(ship.count_weight_cargo())
-    print(player1.get_money())
 
     pass
 
