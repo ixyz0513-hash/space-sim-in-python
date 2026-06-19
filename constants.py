@@ -17,7 +17,7 @@ EARTH_MARKET: dict[str,float] = {
             "Toy": TOY_PRICE, 
             "Fuel cell": FUEL_CELL, 
             "Furniture": FURNITURE, 
-            "Paintbucket": PAINT_BUCKET
+            "Paint bucket": PAINT_BUCKET
             }
 
 EARTH_ITEM_WEIGHTS: list[int] = [TOY_WEIGHT,FUEL_CELL_WEIGHT,FURNITURE_WEIGHT,PAINT_BUCKET_WEIGHT]
