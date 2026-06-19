@@ -12,7 +12,7 @@ class SpaceShip:
         self.__engine: dict[str,float] = {self.__engine_name: 0.5} # engine name and fuel efficiency
         self.__cargo: dict[str,float] = {}
         self.__weight_cargo: list[int] = []
-        pass
+        return
 
     def get_load_weight(self) -> int:
         return self.__load_weight
@@ -24,15 +24,15 @@ class SpaceShip:
     
     def add_weight_cargo(self, item: int) -> None:
         self.__weight_cargo.append(item)
-        pass
+        return
 
     def substract_weight_cargo(self, index: int) -> None:
         self.__weight_cargo.pop(index)
-        pass
+        return
 
     def throw_last_weight_cargo(self) -> None:
         self.__weight_cargo.pop()
-        pass
+        return
 
     def count_weight_cargo(self) -> int:
         weight: int = 0
@@ -43,7 +43,7 @@ class SpaceShip:
         return weight
 
     def print_items_and_weight_cargo(self) -> None:
-        
+
         counter: int = 0
         
         for obj in self.__cargo:
@@ -52,18 +52,26 @@ class SpaceShip:
 
             counter += 1
         
-        pass
+        return
 
     
-    def add_weight_cargo(self, item: int) -> None:
-        self.__cargo.append(item) # dict todo fix it
-        pass
+    def add_item_cargo(self, name: str,item_price: float) -> None:
+        
+        if name in self.__cargo:
+            self.__cargo[name] += item_price
+            return
+        
+        self.__cargo[name] = item_price
+
+        return
+
+    def sub_item_cargo(self,name: str) -> None:
+        self.__cargo.pop(name,None)
+        return
 
 
-    def get_length_cargo(self) -> None:
+    def get_length_cargo(self) -> int:
         return len(self.__cargo)
-        pass
-
     
     def get_item_price_cargo(self, index: int) -> float:
         

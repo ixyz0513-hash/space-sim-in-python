@@ -1,26 +1,32 @@
-from constants import TOY_PRICE,FUEL_CELL,FURNITURE,PAINT_BUCKET,TOY_WEIGHT,FUEL_CELL_WEIGHT,FURNITURE_WEIGHT,PAINT_BUCKET_WEIGHT
+from constants import TOY_PRICE,FUEL_CELL,FURNITURE,PAINT_BUCKET,TOY_WEIGHT,FUEL_CELL_WEIGHT,FURNITURE_WEIGHT,PAINT_BUCKET_WEIGHT,EARTH_MARKET,EARTH_ITEM_WEIGHTS,EARTH_ITEM_PRICES_DEFAULT
 from spaceship import SpaceShip
 from player import Player
 
 
 class Planet:
 
-    def __init__(self, name = "Earth", x_position: int = 3, y_position: int = 2, sell_cost_multiplier: float = 0.90,buy_cost_multiplier: float = 1.0) -> None:
+    def __init__(
+    self, name = "Earth", 
+    x_position: int = 2, 
+    y_position: int = 4, 
+    sell_cost_multiplier: float = 0.90,
+    buy_cost_multiplier: float = 1.0,
+    market: dict[str,float] = EARTH_MARKET,
+    item_weights: list[int] = EARTH_ITEM_WEIGHTS,
+    item_prices_default: list[float] = EARTH_ITEM_PRICES_DEFAULT
+    ) -> None:
         self.__name: str = name
         self.__x_position: int = x_position
         self.__y_position: int = y_position
         self.__sell_cost_multiplier: float = sell_cost_multiplier
         self.__buy_cost_multiplier: float = buy_cost_multiplier
         
-        self.__market: dict[str,float] = {
-            "Toy": TOY_PRICE * self.__buy_cost_multiplier, 
-            "Fuel cell": FUEL_CELL * self.__buy_cost_multiplier, 
-            "Furniture": FURNITURE * self.__buy_cost_multiplier, 
-            "Paintbucket": PAINT_BUCKET * self.__buy_cost_multiplier
-            }
+        self.__market: dict[str,float] = market
 
-        self.__items_weight: list[int] = [TOY_WEIGHT,FUEL_CELL_WEIGHT,FURNITURE_WEIGHT,PAINT_BUCKET_WEIGHT]
-        pass
+        self.__items_weight: list[int] = item_weights
+        self.__items_prices_default: list[float] = item_prices_default
+        return
+
 
     def get_x_position(self) -> int:
         return self.__x_position
@@ -59,7 +65,7 @@ class Planet:
 
             counter += 1
         
-        pass
+        return
     
 
     def get_item_price(self, index: int) -> float:
@@ -73,25 +79,40 @@ class Planet:
 
             counter += 1
 
-        pass
+        return
+
+    def get_item_name(self, index: int) -> str:
+        
+        counter: int = 0
+
+        for obj in self.__market:
+
+            if counter == index:
+                return obj
+
+            counter += 1
+
+        return
 
     def get_item_weight(self,index: int) -> int:
         return self.__items_weight[index]
-        
 
-    
-    def recalculate_market(self) -> None:
-        self.__market: dict[str,float] = {
-            "Toy": TOY_PRICE * self.__buy_cost_multiplier, 
-            "Fuel cell": FUEL_CELL * self.__buy_cost_multiplier, 
-            "Furniture": FURNITURE * self.__buy_cost_multiplier, 
-            "Paintbucket": PAINT_BUCKET * self.__buy_cost_multiplier
-            }
-        
-        pass
+
+    def recalculate_market(self, multiplier: float) -> None:
+
+        counter: int = 0
+
+        for obj in self.__market:
+            self.__market[obj] = self.__items_prices_default[counter]
+            self.__market[obj] *= multiplier
+
+            counter += 1
+
+        return
     
 
     def buy_something_from_market(self, ship: SpaceShip, player: Player) -> bool:
+        self.recalculate_market(self.__buy_cost_multiplier)
         self.print_items_and_weight()
         
         what_item_str: str = input("from 1 to 4 choose what you want to buy: ")
@@ -112,6 +133,8 @@ class Planet:
              return False
 
         ship.add_weight_cargo(self.get_item_weight(what_item))
+        self.recalculate_market(self.__sell_cost_multiplier)
+        ship.add_item_cargo(self.get_item_name(what_item),self.get_item_price(what_item))
 
 
         if ship.count_weight_cargo() > ship.get_load_weight():
@@ -119,6 +142,7 @@ class Planet:
              ship.throw_last_weight_cargo()
              return False
         
+        self.recalculate_market(self.__buy_cost_multiplier)
         player.substract_money(self.get_item_price(what_item))
 
         return True
@@ -139,12 +163,13 @@ class Planet:
 
         what_item -= 1
 
-        if what_item < 0 or what_item > ship.get_length_cargo():
+        if what_item < 0 or what_item >= ship.get_length_cargo():
             print("out of bounds")
             return False
         
         player.add_money(ship.get_item_price_cargo(what_item))
         ship.substract_weight_cargo(what_item)
+        ship.sub_item_cargo(what_item)
 
         return True
     

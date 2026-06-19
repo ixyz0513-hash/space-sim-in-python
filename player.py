@@ -4,7 +4,7 @@ class Player:
         self.__name: str = name
         self.__health: int = health
         self.__money: float = money
-        pass
+        return
 
     def get_name(self) -> str:
         return self.__name
@@ -19,8 +19,8 @@ class Player:
 
     def substract_money(self, item: float) -> None:
         self.__money -= item
-        pass
+        return
 
     def add_money(self, item: float) -> None:
         self.__money += item
-        pass
+        return
