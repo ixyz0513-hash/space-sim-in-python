@@ -1,2 +1,13 @@
 FUEL_LOST_PER_DISTANCE1 = 5
 TURN_COUNT = 0
+
+# items earth
+TOY_PRICE: float = 15.0
+FUEL_CELL: float = 25.0
+FURNITURE: float = 75.0
+PAINT_BUCKET: float = 30.0
+
+TOY_WEIGHT: int = 2
+FUEL_CELL_WEIGHT: int = 3
+FURNITURE_WEIGHT: int = 10
+PAINT_BUCKET_WEIGHT: int = 5

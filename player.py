@@ -1,9 +1,9 @@
 class Player:
 
     def __init__(self,name: str = "John", health: int = 100, money: float = 50.0) -> None:
-        self.__name = name
-        self.__health = health
-        self.__money = money
+        self.__name: str = name
+        self.__health: int = health
+        self.__money: float = money
         pass
 
     def get_name(self) -> str:
@@ -16,3 +16,11 @@ class Player:
     
     def get_money(self) -> float:
         return self.__money
+
+    def substract_money(self, item: float) -> None:
+        self.__money -= item
+        pass
+
+    def add_money(self, item: float) -> None:
+        self.__money += item
+        pass
