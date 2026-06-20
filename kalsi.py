@@ -6,8 +6,8 @@ class Kalsi(Planet):
 
     def __init__(
     self, name: str = "Kalsi",
-    x_position: int = 5,
-    y_position: int = 1,
+    x_position: int = 1,
+    y_position: int = 0,
     sell_cost_multiplier: float = 1.05,
     buy_cost_multiplier: float = 1.0,
     market: dict[str,float] = KALSI_MARKET,

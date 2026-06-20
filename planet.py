@@ -6,14 +6,14 @@ from player import Player
 class Planet:
 
     def __init__(
-    self, name = "Earth", 
-    x_position: int = 2, 
-    y_position: int = 4, 
-    sell_cost_multiplier: float = 0.90,
-    buy_cost_multiplier: float = 1.0,
-    market: dict[str,float] = EARTH_MARKET,
-    item_weights: list[int] = EARTH_ITEM_WEIGHTS,
-    item_prices_default: list[float] = EARTH_ITEM_PRICES_DEFAULT
+    self, name: str, 
+    x_position: int, 
+    y_position: int, 
+    sell_cost_multiplier: float,
+    buy_cost_multiplier: float,
+    market: dict[str,float],
+    item_weights: list[int],
+    item_prices_default: list[float]
     ) -> None:
 
         self._name: str = name
@@ -134,7 +134,6 @@ class Planet:
              return False
 
         ship.add_weight_cargo(self.get_item_weight(what_item), self.get_item_name(what_item))
-        self.recalculate_market(self._sell_cost_multiplier)
         ship.add_item_cargo(self.get_item_name(what_item),self.get_item_price(what_item))
 
 
@@ -143,7 +142,6 @@ class Planet:
              ship.throw_last_weight_cargo()
              return False
         
-        self.recalculate_market(self._buy_cost_multiplier)
         player.substract_money(self.get_item_price(what_item))
 
         return True
@@ -168,9 +166,14 @@ class Planet:
             print("out of bounds")
             return False
         
+        item_price_default: float = ship.get_item_price_cargo(what_item)
+        item_name: str = ship.get_item_name_cargo(what_item)
+
+        ship.recaculate_item_price(self._sell_cost_multiplier,what_item)
         player.add_money(ship.get_item_price_cargo(what_item))
-        ship.substract_weight_cargo(what_item,self.get_item_weight(what_item))
+        ship.substract_weight_cargo(what_item)
         ship.sub_item_cargo(what_item)
+        ship.set_item_price_default(item_name,item_price_default)
 
         return True
     

@@ -1,4 +1,4 @@
-import math
+from math import sqrt
 from constants import FUEL_LOST_PER_DISTANCE1,FUEL_GAIN_PER_FUEL_CELL
 
 class SpaceShip:
@@ -9,7 +9,7 @@ class SpaceShip:
         self._x_position: int = x_position
         self._y_position: int = y_position
         self._engine_name: str = "engine.0.1"
-        self._engine: dict[str,float] = {self._engine_name: 0.5} # engine name and fuel efficiency
+        self._engine: dict[str,float] = {self._engine_name: 0.75} # engine name and fuel efficiency
         self._cargo: dict[str,float] = {}
         self._weight_cargo: list[int] = []
         self._quantity_cargo: list[int] = []
@@ -38,7 +38,7 @@ class SpaceShip:
 
         return
 
-    def substract_weight_cargo(self, index: int, item_weight: int) -> None:
+    def substract_weight_cargo(self, index: int) -> None:
         if self._quantity_cargo[index] > 1:
             self._quantity_cargo[index] -= 1
             
@@ -114,6 +114,25 @@ class SpaceShip:
 
         return
 
+    
+    def recaculate_item_price(self, multiplier: float, index: int) -> None:
+
+        counter: int = 0
+
+        for obj in self._cargo:
+
+            if index == counter:
+                self._cargo[obj] *= multiplier
+                break
+            
+            counter += 1
+        
+        return
+    
+    def set_item_price_default(self,name: str, price: float) -> None:
+        self._cargo[name] = price
+        return
+
 
     def get_length_cargo(self) -> int:
         return len(self._cargo)
@@ -126,6 +145,16 @@ class SpaceShip:
 
             if counter == index:
                 return self._cargo[obj]
+
+        pass
+    
+    def get_item_name_cargo(self, index: int) -> str:
+        counter: int = 0
+
+        for obj in self._cargo:
+
+            if counter == index:
+                return obj
 
         pass
 
