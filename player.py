@@ -14,6 +14,10 @@ class Player:
         return self._health
 
     
+    def check_if_alive(self) -> bool:
+        return self._health > 0
+
+    
     def get_money(self) -> float:
         return self._money
 

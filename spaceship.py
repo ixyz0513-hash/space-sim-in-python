@@ -12,6 +12,7 @@ class SpaceShip:
         self._engine: dict[str,float] = {self._engine_name: 0.5} # engine name and fuel efficiency
         self._cargo: dict[str,float] = {}
         self._weight_cargo: list[int] = []
+        self._quantity_cargo: list[int] = []
         return
 
     def get_load_weight(self) -> int:
@@ -22,12 +23,28 @@ class SpaceShip:
         return self._weight_cargo
 
     
-    def add_weight_cargo(self, item: int) -> None:
-        self._weight_cargo.append(item)
+    def add_weight_cargo(self, item: int, name: str) -> None:
+        found: bool = False
+
+
+        for obj in self._cargo:
+
+            if obj == name:
+                found = True
+                break
+        
+        if found == False:
+            self._weight_cargo.append(item)
+
         return
 
-    def substract_weight_cargo(self, index: int) -> None:
-        self._weight_cargo.pop(index)
+    def substract_weight_cargo(self, index: int, item_weight: int) -> None:
+        if self._quantity_cargo[index] > 1:
+            self._quantity_cargo[index] -= 1
+            
+        else:
+            self._weight_cargo.pop(index)
+
         return
 
     def throw_last_weight_cargo(self) -> None:
@@ -38,17 +55,21 @@ class SpaceShip:
         weight: int = 0
 
         for i in range(0,len(self._weight_cargo)):
-            weight += self._weight_cargo[i]
+            weight += self._weight_cargo[i] * self._quantity_cargo[i]
 
         return weight
 
     def print_items_and_weight_cargo(self) -> None:
+        
+        if self.get_length_cargo() == None:
+            print("no items to check")
+            return
 
         counter: int = 0
         
         for obj in self._cargo:
             
-            print(f"Name {obj}:  Buy price {self._cargo[obj]}:  Weight {self._weight_cargo[counter]}")
+            print(f"Name {obj}:  Sell price {self._cargo[obj]}:  Weight {self._weight_cargo[counter]}: Quantity {self._quantity_cargo[counter]}")
 
             counter += 1
         
@@ -56,17 +77,41 @@ class SpaceShip:
 
     
     def add_item_cargo(self, name: str,item_price: float) -> None:
+        found: bool = False
+        counter: int = 0
+
+
+        for obj in self._cargo:
+
+            if obj == name:
+                self._quantity_cargo[counter] += 1
+                found = True
+                break
+                        
+                counter += 1
         
-        if name in self._cargo:
-            self._cargo[name] += item_price
-            return
-        
-        self._cargo[name] = item_price
+        if found == False:
+            self._cargo[name] = item_price
+            self._quantity_cargo.append(1)
 
         return
 
     def sub_item_cargo(self,name: str) -> None:
-        self._cargo.pop(name,None)
+        found: bool = False
+        counter: int = 0
+
+        for obj in self._cargo:
+
+            if obj == name and self._quantity_cargo[counter] > 1:
+                found = True
+                break
+
+            
+            counter += 1
+
+        if found == False:
+            self._cargo.pop(name,None)
+
         return
 
 
@@ -77,7 +122,7 @@ class SpaceShip:
         
         counter: int = 0
 
-        for obj in self.__cargo:
+        for obj in self._cargo:
 
             if counter == index:
                 return self._cargo[obj]

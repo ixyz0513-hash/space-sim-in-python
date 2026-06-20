@@ -1,4 +1,4 @@
-from constants import TOY_PRICE,FUEL_CELL,FURNITURE,PAINT_BUCKET,TOY_WEIGHT,FUEL_CELL_WEIGHT,FURNITURE_WEIGHT,PAINT_BUCKET_WEIGHT,EARTH_MARKET,EARTH_ITEM_WEIGHTS,EARTH_ITEM_PRICES_DEFAULT
+from constants import EARTH_MARKET,EARTH_ITEM_WEIGHTS,EARTH_ITEM_PRICES_DEFAULT
 from spaceship import SpaceShip
 from player import Player
 
@@ -15,54 +15,54 @@ class Planet:
     item_weights: list[int] = EARTH_ITEM_WEIGHTS,
     item_prices_default: list[float] = EARTH_ITEM_PRICES_DEFAULT
     ) -> None:
-    
-        self.__name: str = name
-        self.__x_position: int = x_position
-        self.__y_position: int = y_position
-        self.__sell_cost_multiplier: float = sell_cost_multiplier
-        self.__buy_cost_multiplier: float = buy_cost_multiplier
-        
-        self.__market: dict[str,float] = market
 
-        self.__items_weight: list[int] = item_weights
-        self.__items_prices_default: list[float] = item_prices_default
+        self._name: str = name
+        self._x_position: int = x_position
+        self._y_position: int = y_position
+        self._sell_cost_multiplier: float = sell_cost_multiplier
+        self._buy_cost_multiplier: float = buy_cost_multiplier
+        
+        self._market: dict[str,float] = market
+
+        self._items_weight: list[int] = item_weights
+        self._items_prices_default: list[float] = item_prices_default
         return
 
 
     def get_x_position(self) -> int:
-        return self.__x_position
+        return self._x_position
     
 
     def get_y_position(self) -> int:
-        return self.__y_position
+        return self._y_position
     
     
     def get_name(self) -> str:
-        return self.__name
+        return self._name
     
 
     def get_sell_cost_multiplier(self) -> float:
-        return self.__sell_cost_multiplier
+        return self._sell_cost_multiplier
     
     def get_buy_cost_multiplier(self) -> float:
-        return self.__sell_buy_multiplier
+        return self._sell_buy_multiplier
     
     
     def get_market(self) -> dict[str,float]:
-        return self.__market
+        return self._market
     
 
     def get_items_weight(self) -> list[int]:
-        return self.__items_weight
+        return self._items_weight
 
     
     def print_items_and_weight(self) -> None:
         
         counter: int = 0
         
-        for obj in self.__market:
+        for obj in self._market:
             
-            print(f"Name {obj}:  Buy price {self.__market[obj]}:  Weight {self.__items_weight[counter]}")
+            print(f"Name {obj}:  Buy price {self._market[obj]}:  Weight {self._items_weight[counter]}")
 
             counter += 1
         
@@ -73,10 +73,10 @@ class Planet:
         
         counter: int = 0
 
-        for obj in self.__market:
+        for obj in self._market:
 
             if counter == index:
-                return self.__market[obj] 
+                return self._market[obj] 
 
             counter += 1
 
@@ -86,7 +86,7 @@ class Planet:
         
         counter: int = 0
 
-        for obj in self.__market:
+        for obj in self._market:
 
             if counter == index:
                 return obj
@@ -96,16 +96,16 @@ class Planet:
         return
 
     def get_item_weight(self,index: int) -> int:
-        return self.__items_weight[index]
+        return self._items_weight[index]
 
 
     def recalculate_market(self, multiplier: float) -> None:
 
         counter: int = 0
 
-        for obj in self.__market:
-            self.__market[obj] = self.__items_prices_default[counter]
-            self.__market[obj] *= multiplier
+        for obj in self._market:
+            self._market[obj] = self._items_prices_default[counter]
+            self._market[obj] *= multiplier
 
             counter += 1
 
@@ -113,7 +113,7 @@ class Planet:
     
 
     def buy_something_from_market(self, ship: SpaceShip, player: Player) -> bool:
-        self.recalculate_market(self.__buy_cost_multiplier)
+        self.recalculate_market(self._buy_cost_multiplier)
         self.print_items_and_weight()
         
         what_item_str: str = input("from 1 to 4 choose what you want to buy: ")
@@ -133,8 +133,8 @@ class Planet:
              print("item is too heavy")
              return False
 
-        ship.add_weight_cargo(self.get_item_weight(what_item))
-        self.recalculate_market(self.__sell_cost_multiplier)
+        ship.add_weight_cargo(self.get_item_weight(what_item), self.get_item_name(what_item))
+        self.recalculate_market(self._sell_cost_multiplier)
         ship.add_item_cargo(self.get_item_name(what_item),self.get_item_price(what_item))
 
 
@@ -143,7 +143,7 @@ class Planet:
              ship.throw_last_weight_cargo()
              return False
         
-        self.recalculate_market(self.__buy_cost_multiplier)
+        self.recalculate_market(self._buy_cost_multiplier)
         player.substract_money(self.get_item_price(what_item))
 
         return True
@@ -169,7 +169,7 @@ class Planet:
             return False
         
         player.add_money(ship.get_item_price_cargo(what_item))
-        ship.substract_weight_cargo(what_item)
+        ship.substract_weight_cargo(what_item,self.get_item_weight(what_item))
         ship.sub_item_cargo(what_item)
 
         return True
