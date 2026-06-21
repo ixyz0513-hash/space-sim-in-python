@@ -7,6 +7,16 @@ from mars import Mars
 from venus import Venus
 from os import system,name
 from constants import FUEL_LOST_PER_DISTANCE1,FUEL_GAIN_PER_FUEL_CELL,FUEL_CELL_PRICE,HEALTH_CELL_PRICE,HEALTH_GAIN_PER_HEALTH_CELL,IMMUNITY_HAZARD_PRICE,MARKET_PREDICTOR_PRICE,TELEPORT_PRICE,MINNING_ASTEROID_DEVICE_PRICE,EFFICIENCY_BOOSTER_PRICE
+from time import sleep
+from random_number import random_number_generator
+
+
+
+
+
+
+def wait() -> None:
+    sleep(1.5)
 
 
 def clear_screen() -> None:
@@ -30,7 +40,6 @@ def check_if_leave() -> bool:
 
 
 def print_welcome(ship: SpaceShip) -> bool:
-    clear_screen()
 
     print("Hello this is the space simulator game its all about navigating and selling your cargo to planets for now there are four planets and probably there will be only four forever")
     print(f"fuel is the most important thing in this game otherwise you wouldnt be able to move so game lost ggs your starting fuel is unless you changed it in the code {ship.get_fuel()}")
@@ -49,7 +58,6 @@ def print_welcome(ship: SpaceShip) -> bool:
 
 def print_instructions_consumables() -> bool:
     clear_screen()
-    
     print(f"fuel cell: fuel cell costs default {FUEL_CELL_PRICE} the price can be not the same because the multiplier for the market is not 1.0 it gives you {FUEL_GAIN_PER_FUEL_CELL}")
     print(f"health cell: health cell costs default {HEALTH_CELL_PRICE} it can be random like always it gives you {HEALTH_GAIN_PER_HEALTH_CELL} not implemented yet but you can sell it")
     print(f"immunity hazard armor: immunity hazard armor costs default {IMMUNITY_HAZARD_PRICE} it gives you 3 turns of immunity to hazards not implemented yet but you can sell it")
@@ -66,13 +74,135 @@ def print_instructions_consumables() -> bool:
 
 
 
-def game_loop(player: Player, ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> bool:
-    clear_screen()
-    
-    if print_instructions_consumables() == False:
-        return False
 
-    return True
+
+
+def check_what_market_buy(player: Player, ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> None:
+
+    IF_FALSE_SKIP: bool = True
+
+    if earth.get_y_position() == ship.get_y_position() and earth.get_x_position() == ship.get_x_position():
+        IF_FALSE_SKIP = earth.buy_something_from_market(ship,player)
+
+    elif kalsi.get_y_position() == ship.get_y_position() and kalsi.get_x_position() == ship.get_x_position():
+        IF_FALSE_SKIP = kalsi.buy_something_from_market(ship,player)
+
+    
+    elif mars.get_y_position() == ship.get_y_position() and mars.get_x_position() == ship.get_x_position():
+        IF_FALSE_SKIP = mars.buy_something_from_market(ship,player)
+
+    
+    elif venus.get_y_position() == ship.get_y_position() and venus.get_x_position() == ship.get_x_position():
+        IF_FALSE_SKIP = venus.buy_something_from_market(ship,player)
+
+
+    
+    if IF_FALSE_SKIP == False:
+        wait()
+    
+
+    return
+
+
+
+
+def check_what_market_sell(player: Player, ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> None:
+    IF_FALSE_SKIP: bool = True
+
+    if earth.get_y_position() == ship.get_y_position() and earth.get_x_position() == ship.get_x_position():
+        IF_FALSE_SKIP = earth.sell_something_from_ship(ship,player)
+
+    elif kalsi.get_y_position() == ship.get_y_position() and kalsi.get_x_position() == ship.get_x_position():
+        IF_FALSE_SKIP = kalsi.sell_something_from_ship(ship,player)
+
+    
+    elif mars.get_y_position() == ship.get_y_position() and mars.get_x_position() == ship.get_x_position():
+        IF_FALSE_SKIP = mars.sell_something_from_ship(ship,player)
+
+    
+    elif venus.get_y_position() == ship.get_y_position() and venus.get_x_position() == ship.get_x_position():
+        IF_FALSE_SKIP = venus.sell_something_from_ship(ship,player)
+
+
+    
+    if IF_FALSE_SKIP == False:
+        wait()
+    
+
+    return
+
+
+
+
+
+def game_loop(player: Player, ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> None:
+    clear_screen()
+    map_print(ship,earth,kalsi,mars,venus)
+    
+    print("type 1 to check the instructions for the consumables")
+    print("type 2 to move your ship")
+    print("type 3 to buy items if on a planet")
+    print("type 4 to sell your items if on a planet")
+    print("type 5 to check your money")
+    print("type 6 to check your fuel")
+    print("type 7 to check your cargo")
+    print("type 8 to use a fuel cell")
+
+    number_str: str = input("type your choice: ")
+    number: int = int(number_str)
+
+    if number == 1:
+        while print_instructions_consumables() == False:
+            clear_screen()
+
+    
+    elif number == 2:
+        while ship.move() == False:
+            sleep(1.5)
+            clear_screen()
+            
+            map_print(ship,earth,kalsi,mars,venus)
+            if ship.check_fuel() == False:
+                print("no fuel left")
+                sleep(1.5)
+                return
+    
+
+
+    elif number == 3:
+        check_what_market_buy(player, ship, earth, kalsi, mars, venus)
+    
+
+    elif number == 4:
+       check_what_market_sell(player, ship, earth, kalsi, mars, venus)
+        
+
+    
+    elif number == 5:
+        print(f"how much money: {player.get_money()}")
+        wait()
+
+
+    elif number == 6:
+        print(f"how much fuel: {ship.get_fuel()}")
+        wait()
+
+    
+    elif number == 7:
+        ship.print_items_and_weight_cargo()
+        wait()
+
+    
+    elif number == 8:
+        ship.use_fuel_cell()
+        wait()
+
+    
+    else:
+        print("unkown number")
+        wait()
+
+    return
 
 
 def main() -> None:
@@ -84,12 +214,18 @@ def main() -> None:
     venus = Venus()
     
     while print_welcome(ship) != True:
-        print()
+        clear_screen()
 
     
-    while game_loop(player,ship,earth,kalsi,mars,venus) != True:
-        print()
+    while ship.check_fuel() == True and player.check_if_alive() == True:
+        game_loop(player,ship,earth,kalsi,mars,venus)
+    
+
+    if ship.check_fuel() == True or player.check_if_alive() == True:
+        clear_screen()
+        print("game over")
     
     return
+
 
 main()

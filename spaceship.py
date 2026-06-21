@@ -1,4 +1,4 @@
-from math import sqrt
+import math
 from constants import FUEL_LOST_PER_DISTANCE1,FUEL_GAIN_PER_FUEL_CELL
 
 class SpaceShip:
@@ -61,7 +61,7 @@ class SpaceShip:
 
     def print_items_and_weight_cargo(self) -> None:
         
-        if self.get_length_cargo() == None:
+        if len(self._weight_cargo) == 0:
             print("no items to check")
             return
 
@@ -177,11 +177,12 @@ class SpaceShip:
     
     
     def check_fuel(self) -> bool:
-        return self._fuel > 0
+        return self._fuel > FUEL_LOST_PER_DISTANCE1 / self.get_engine_efficiency()
     
     
-    def get_engine_efficiency(self) -> dict[str,float]:
-        return self._engine
+    def get_engine_efficiency(self) -> float:
+        for obj in self._engine:
+            return self._engine[obj]
     
 
     def move(self) -> bool:
@@ -203,7 +204,7 @@ class SpaceShip:
         final_position = (self._x_position - x_position)**2 + (self._y_position - y_position)**2
         distance = math.sqrt(final_position)
         distance_final = round(distance)
-        fuel_lost = (FUEL_LOST_PER_DISTANCE1 / self._engine[self._engine_name]) * distance_final
+        fuel_lost = (FUEL_LOST_PER_DISTANCE1 / self.get_engine_efficiency()) * distance_final
 
         if fuel_lost > self._fuel:
             print("not enough fuel")

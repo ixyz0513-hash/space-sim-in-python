@@ -19,28 +19,27 @@ galaxy_map: list[str] = [
 
 
 def map_print(ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> None:
-    found: bool = False
+    
     
     for i in range(0, len(galaxy_map)):
         for j in range(0, len(galaxy_map[i])):
             
-            
             if ship.get_y_position() == i and ship.get_x_position() == j:
-                galaxy_map[ship.get_y_position()][ship.get_x_position()] = "P"
+                print("P",end=" ")
 
             elif earth.get_y_position() == i and earth.get_x_position() == j:
-                galaxy_map[earth.get_y_position()][earth.get_x_position()] = "E"
+                print("E",end=" ")
 
             elif kalsi.get_y_position() == i and kalsi.get_x_position() == j:
-                galaxy_map[kalsi.get_y_position()][kalsi.get_x_position()] = "K"
+                print("K",end=" ")
 
             elif mars.get_y_position() == i and mars.get_x_position() == j:
-                galaxy_map[mars.get_y_position()][mars.get_x_position()] = "M"
+                print("M",end=" ")
 
             elif venus.get_y_position() == i and venus.get_x_position() == j:
-                galaxy_map[venus.get_y_position()][venus.get_x_position()] = "V"
+                print("V",end=" ")
             
-            if found == False:
+            else:
                 print(galaxy_map[i][j],end=" ")
     
         print()
@@ -48,10 +47,5 @@ def map_print(ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars: Mars, venus: Ve
     return
 
 
-def check_if_on_something(ship: SpaceShip) -> bool:
     
-    if galaxy_map[ship.get_y_position()][ship.get_x_position()] == 1:
-        return True
-    
-    return False
 
