@@ -176,6 +176,10 @@ class SpaceShip:
         return self._fuel
     
     
+    def check_fuel(self) -> bool:
+        return self._fuel > 0
+    
+    
     def get_engine_efficiency(self) -> dict[str,float]:
         return self._engine
     
