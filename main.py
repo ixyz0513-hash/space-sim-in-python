@@ -222,82 +222,95 @@ def market_go_up_or_down(earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -
 
 
 def game_loop(player: Player, ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> None:
-    clear_screen()
-    map_print(ship,earth,kalsi,mars,venus)
+    while True:
+        clear_screen()
+        map_print(ship,earth,kalsi,mars,venus)
     
-    print("type 1 to check the instructions for the consumables")
-    print("type 2 to move your ship")
-    print("type 3 to buy items if on a planet")
-    print("type 4 to sell your items if on a planet")
-    print("type 5 to check your money")
-    print("type 6 to check your fuel")
-    print("type 7 to check your cargo")
-    print("type 8 to use a fuel cell")
-    print("type 9 to get the buy cost multiplier of a planet if on a planet")
-    print("type 10 to get the sell cost multiplier of a planet if on a planet")
+        print("type 1 to check the instructions for the consumables")
+        print("type 2 to move your ship")
+        print("type 3 to buy items if on a planet")
+        print("type 4 to sell your items if on a planet")
+        print("type 5 to check your money")
+        print("type 6 to check your fuel")
+        print("type 7 to check your cargo")
+        print("type 8 to use a fuel cell")
+        print("type 9 to get the buy cost multiplier of a planet if on a planet")
+        print("type 10 to get the sell cost multiplier of a planet if on a planet")
+        print("type 11 to skip turn")
 
-    number_str: str = input("type your choice: ")
-    number: int = int(number_str)
+        number_str: str = input("type your choice: ")
+        number: int = int(number_str)
+        found: bool = False
 
-    if number == 1:
-        while print_instructions_consumables() == False:
-            clear_screen()
+        if number == 1:
+            while print_instructions_consumables() == False:
+                clear_screen()
 
     
-    elif number == 2:
-        while ship.move() == False:
-            sleep(1.5)
-            clear_screen()
+        elif number == 2:
+            found = True
+
+            while ship.move() == False:
+                wait()
+                clear_screen()
             
-            map_print(ship,earth,kalsi,mars,venus)
-            if ship.check_fuel() == False:
-                print("no fuel left")
-                sleep(1.5)
-                return
+                map_print(ship,earth,kalsi,mars,venus)
+                if ship.check_fuel() == False:
+                    print("no fuel left")
+                    found = False
+                    wait()
     
 
 
-    elif number == 3:
-        check_what_market_buy(player, ship, earth, kalsi, mars, venus)
+        elif number == 3:
+            check_what_market_buy(player, ship, earth, kalsi, mars, venus)
+            found = True
     
 
-    elif number == 4:
-       check_what_market_sell(player, ship, earth, kalsi, mars, venus)
+        elif number == 4:
+            check_what_market_sell(player, ship, earth, kalsi, mars, venus)
+            found = True
         
 
     
-    elif number == 5:
-        print(f"how much money: {player.get_money()}")
-        wait()
+        elif number == 5:
+            print(f"how much money: {player.get_money()}")
+            wait()
 
 
-    elif number == 6:
-        print(f"how much fuel: {ship.get_fuel()}")
-        wait()
-
-    
-    elif number == 7:
-        ship.print_items_and_weight_cargo()
-        wait()
+        elif number == 6:
+            print(f"how much fuel: {ship.get_fuel()}")
+            wait()
 
     
-    elif number == 8:
-        ship.use_fuel_cell()
-        wait()
-    
-    elif number == 9:
-        check_what_market_multiplier_sell(ship,earth,kalsi,mars,venus)
-        wait()
+        elif number == 7:
+            ship.print_items_and_weight_cargo()
+            wait()
 
-    elif number == 10:
-        check_what_market_multiplier_buy(ship,earth,kalsi,mars,venus)
-        wait()
     
-    else:
-        print("unkown number")
-        wait()
+        elif number == 8:
+            ship.use_fuel_cell()
+            found = True
+            wait()
+    
+        elif number == 9:
+            check_what_market_multiplier_sell(ship,earth,kalsi,mars,venus)
+            wait()
 
-    return
+        elif number == 10:
+            check_what_market_multiplier_buy(ship,earth,kalsi,mars,venus)
+            wait()
+        
+
+        elif number == 11:
+             found = True
+    
+        else:
+            print("unkown number")
+            wait()
+        
+        if found == True:
+            return
 
 
 def main() -> None:
