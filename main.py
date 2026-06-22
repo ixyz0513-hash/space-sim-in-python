@@ -132,6 +132,92 @@ def check_what_market_sell(player: Player, ship: SpaceShip, earth: Earth, kalsi:
     return
 
 
+def check_what_market_multiplier_sell(ship: SpaceShip,earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> None:
+
+    name_planet: str = ""
+    multiplier_planet_sell: float = None
+    
+    if earth.get_y_position() == ship.get_y_position() and earth.get_x_position() == ship.get_x_position():
+        name_planet = earth.get_name()
+        multiplier_planet_sell = earth.get_sell_cost_multiplier()
+
+    elif kalsi.get_y_position() == ship.get_y_position() and kalsi.get_x_position() == ship.get_x_position():
+        name_planet = kalsi.get_name()
+        multiplier_planet_sell = kalsi.get_sell_cost_multiplier()
+
+    
+    elif mars.get_y_position() == ship.get_y_position() and mars.get_x_position() == ship.get_x_position():
+        name_planet = mars.get_name()
+        multiplier_planet_sell = mars.get_sell_cost_multiplier()
+
+    
+    elif venus.get_y_position() == ship.get_y_position() and venus.get_x_position() == ship.get_x_position():
+        name_planet = venus.get_name()
+        multiplier_planet_sell = venus.get_sell_cost_multiplier()
+    
+
+    if multiplier_planet_sell != None:
+        print(f"{name_planet} sell multiplier is: {multiplier_planet_sell}")
+
+    else:
+        print("no planet found")
+
+    return
+
+
+
+def check_what_market_multiplier_buy(ship: SpaceShip,earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> None:
+
+    name_planet: str = ""
+    multiplier_planet_buy: float = None
+    
+    if earth.get_y_position() == ship.get_y_position() and earth.get_x_position() == ship.get_x_position():
+        name_planet = earth.get_name()
+        multiplier_planet_buy = earth.get_buy_cost_multiplier()
+
+    elif kalsi.get_y_position() == ship.get_y_position() and kalsi.get_x_position() == ship.get_x_position():
+        name_planet = kalsi.get_name()
+        multiplier_planet_buy = kalsi.get_buy_cost_multiplier()
+
+    
+    elif mars.get_y_position() == ship.get_y_position() and mars.get_x_position() == ship.get_x_position():
+        name_planet = mars.get_name()
+        multiplier_planet_buy = mars.get_buy_cost_multiplier()
+
+    
+    elif venus.get_y_position() == ship.get_y_position() and venus.get_x_position() == ship.get_x_position():
+        name_planet = venus.get_name()
+        multiplier_planet_buy = venus.get_buy_cost_multiplier()
+    
+
+    if multiplier_planet_buy != None:
+        print(f"{name_planet} buy multiplier is: {multiplier_planet_buy}")
+    
+    else:
+        print("no planet found")
+
+    return
+
+
+
+def market_go_up_or_down(earth: Earth, kalsi: Kalsi, mars: Mars, venus: Venus) -> None:
+    counter: int = 0
+
+    list_planet = [earth,kalsi,mars,venus]
+
+    while counter <= 3:
+        minus_plus_sell: int = random_number_generator(0,5)
+        minus_plus_buy: int = random_number_generator(0,5)
+        multiplier_sell: float = random_number_generator(0.10,0.20)
+        multiplier_buy: float = random_number_generator(0.15,0.25)
+
+        list_planet[counter].market_substract_plus(minus_plus_sell,minus_plus_buy,multiplier_sell,multiplier_buy)
+
+        counter += 1
+
+    return
+
+
 
 
 
@@ -147,6 +233,8 @@ def game_loop(player: Player, ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars:
     print("type 6 to check your fuel")
     print("type 7 to check your cargo")
     print("type 8 to use a fuel cell")
+    print("type 9 to get the buy cost multiplier of a planet if on a planet")
+    print("type 10 to get the sell cost multiplier of a planet if on a planet")
 
     number_str: str = input("type your choice: ")
     number: int = int(number_str)
@@ -196,7 +284,14 @@ def game_loop(player: Player, ship: SpaceShip, earth: Earth, kalsi: Kalsi, mars:
     elif number == 8:
         ship.use_fuel_cell()
         wait()
+    
+    elif number == 9:
+        check_what_market_multiplier_sell(ship,earth,kalsi,mars,venus)
+        wait()
 
+    elif number == 10:
+        check_what_market_multiplier_buy(ship,earth,kalsi,mars,venus)
+        wait()
     
     else:
         print("unkown number")
@@ -219,9 +314,10 @@ def main() -> None:
     
     while ship.check_fuel() == True and player.check_if_alive() == True:
         game_loop(player,ship,earth,kalsi,mars,venus)
+        market_go_up_or_down(earth,kalsi,mars,venus)
     
 
-    if ship.check_fuel() == True or player.check_if_alive() == True:
+    if ship.check_fuel() == False or player.check_if_alive() == False:
         clear_screen()
         print("game over")
     

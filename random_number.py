@@ -1,4 +1,5 @@
 import time
+import math
 
 
 def random_number_generator(mins,maxs):
@@ -14,5 +15,5 @@ def random_number_generator(mins,maxs):
         min_max_size = maxs - mins + 1
     else:
         min_max_size = maxs - mins + 0.001
-    value = (next_seed % min_max_size) + mins
+    value = round((next_seed % min_max_size) + mins,2)
     return value

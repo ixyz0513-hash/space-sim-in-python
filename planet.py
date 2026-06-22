@@ -1,4 +1,3 @@
-from constants import EARTH_MARKET,EARTH_ITEM_WEIGHTS,EARTH_ITEM_PRICES_DEFAULT
 from spaceship import SpaceShip
 from player import Player
 
@@ -45,7 +44,7 @@ class Planet:
         return self._sell_cost_multiplier
     
     def get_buy_cost_multiplier(self) -> float:
-        return self._sell_buy_multiplier
+        return self._buy_cost_multiplier
     
     
     def get_market(self) -> dict[str,float]:
@@ -97,6 +96,32 @@ class Planet:
 
     def get_item_weight(self,index: int) -> int:
         return self._items_weight[index]
+
+    
+    def market_substract_plus(self,minus_or_plus_sell: int, minus_or_plus_buy: int, multiplier_sell: float, multiplier_buy: float) -> None:
+
+        
+        if minus_or_plus_sell <= 2:
+            self._sell_cost_multiplier += multiplier_sell
+        
+        else:
+            self._sell_cost_multiplier -= multiplier_sell
+        
+
+
+        if minus_or_plus_buy <= 2:
+            self._buy_cost_multiplier += multiplier_buy
+        
+
+        else:
+            self._buy_cost_multiplier -= multiplier_buy
+        
+
+        return
+    
+
+
+
 
 
     def recalculate_market(self, multiplier: float) -> None:
